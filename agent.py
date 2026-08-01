@@ -484,6 +484,11 @@ def deduplicate_jobs(jobs: list[dict]) -> list[dict]:
 
 # ── Step 1: Search ────────────────────────────────────────────────────────────
 def search_jobs(profile: dict) -> str:
+    """
+    Multi-backend DDGS search with retry + backoff.
+    No API keys required — uses ddgs's built-in scraping backends
+    (duckduckgo, bing, brave) with automatic fallback if one is rate-limited.
+    """
     year = date.today().year
 
     queries = [
@@ -497,23 +502,47 @@ def search_jobs(profile: dict) -> str:
         f"LLM agentic AI intern remote India {year}",
     ]
 
+    BACKENDS = ["duckduckgo", "bing", "brave"]  # tried in order per query
+    MAX_RETRIES = 3
+    BASE_DELAY = 2.0  # seconds, doubles each retry
+
     all_results = []
     print("🔍 Step 1: Searching (Hyderabad + Remote only)...")
 
     ddgs = DDGS()
+
     for query in queries:
-        try:
-            results = list(ddgs.text(query, max_results=4))
-            for r in results:
-                all_results.append({
-                    "title":   r.get("title", ""),
-                    "link":    r.get("href",  ""),
-                    "snippet": r.get("body",  ""),
-                })
-            print(f"  ✅ '{query[:52]}' → {len(results)} results")
-            time.sleep(0.5)
-        except Exception as e:
-            print(f"  ⚠️  Failed: {query[:52]} ({e})")
+        results = []
+        for backend in BACKENDS:
+            for attempt in range(1, MAX_RETRIES + 1):
+                try:
+                    results = list(ddgs.text(query, backend=backend, max_results=4))
+                    if results:
+                        print(f"  ✅ [{backend}] '{query[:45]}' → {len(results)} results")
+                        break
+                    else:
+                        print(f"  ⚪ [{backend}] '{query[:45]}' → 0 results (attempt {attempt})")
+                except Exception as e:
+                    wait = BASE_DELAY * (2 ** (attempt - 1))
+                    print(f"  ⚠️  [{backend}] failed (attempt {attempt}/{MAX_RETRIES}): {e} → retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                time.sleep(1.0)  # polite delay between attempts
+            if results:
+                break  # got results from this backend, skip remaining backends
+            time.sleep(1.0)  # delay before trying next backend
+
+        if not results:
+            print(f"  ❌ '{query[:45]}' → no results from any backend")
+
+        for r in results:
+            all_results.append({
+                "title":   r.get("title", ""),
+                "link":    r.get("href",  ""),
+                "snippet": r.get("body",  ""),
+            })
+
+        time.sleep(2.0)  # delay between distinct queries (avoids rate limit)
 
     before      = len(all_results)
     all_results = deduplicate_search_results(all_results)
