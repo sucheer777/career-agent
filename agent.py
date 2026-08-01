@@ -8,7 +8,11 @@ import re
 import time
 from datetime import date
 from groq import Groq
-from ddgs import DDGS
+# NEW
+try:
+    from ddgs import DDGS
+except ImportError:
+    from duckduckgo_search import DDGS
 
 # ── Config ────────────────────────────────────────────────────────────────────
 GROQ_API_KEY = (
