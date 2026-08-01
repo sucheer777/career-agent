@@ -1,21 +1,25 @@
 name: Daily Internship Digest
 
 on:
-  # ── Runs every day at 8:00 AM IST (2:30 AM UTC) ──
   schedule:
     - cron: "30 2 * * *"
-
-  # ── Also allows manual trigger from GitHub UI ──
   workflow_dispatch:
 
 jobs:
   find-and-send-jobs:
     runs-on: ubuntu-latest
 
+    # ── Give Actions permission to push back to repo ──
+    permissions:
+      contents: write
+
     steps:
       # ── 1. Pull your code ─────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       # ── 2. Set up Python ──────────────────────────────
       - name: Set up Python 3.11
@@ -30,10 +34,10 @@ jobs:
       # ── 4. Run the agent ──────────────────────────────
       - name: Run AI Career Agent
         env:
-          GROK_API_KEY:  ${{ secrets.GROK_API_KEY }}
+          GROK_API_KEY:   ${{ secrets.GROK_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          EMAIL_FROM:    ${{ secrets.EMAIL_FROM }}
-          EMAIL_TO:      ${{ secrets.EMAIL_TO }}
+          EMAIL_FROM:     ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO:       ${{ secrets.EMAIL_TO }}
         run: python main.py
 
       # ── 5. Upload jobs JSON as artifact ───────────────
@@ -44,3 +48,13 @@ jobs:
           name: jobs-${{ github.run_id }}
           path: jobs_*.json
           retention-days: 30
+
+      # ── 6. Commit seen_jobs.json back to repo ─────────
+      - name: Save job memory to repo
+        if: always()
+        run: |
+          git config user.name "Career Agent Bot"
+          git config user.email "bot@career-agent.com"
+          git add seen_jobs.json
+          git diff --staged --quiet || git commit -m "chore: update job memory $(date +%Y-%m-%d)"
+          git push

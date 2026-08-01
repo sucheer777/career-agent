@@ -2,7 +2,7 @@
 main.py — Entry point for the AI Career Agent.
 GitHub Actions runs this file every day.
 """
-
+from memory import print_memory_stats
 import sys
 import json
 import traceback
@@ -10,6 +10,7 @@ from datetime import date
 
 from agent import run_agent
 from send_email import send_email
+
 
 
 def main():

@@ -1,96 +1,159 @@
 {
-  "name": "Your Full Name",
-  "email": "your@email.com",
-  "degree": "B.Tech Computer Science",
-  "graduation_year": "2026",
-  "college": "Your College Name",
-  "cgpa": "8.5",
+  "name": "Cholleti Sucheer",
+  "email": "cholletisucheer@gmail.com",
+  "degree": "B.Tech in Computer Science Engineering (AI/ML)",
+  "graduation_year": "2027",
+  "college": "Keshav Memorial College of Engineering",
+  "cgpa": "7.89",
 
   "skills": [
     "Machine Learning",
     "Deep Learning",
-    "Python",
-    "Data Structures",
-    "Algorithms"
+    "Graph Neural Networks",
+    "Agentic AI",
+    "RAG Pipelines",
+    "Multi-Agent Systems",
+    "LLM Integration",
+    "Transformer Architectures",
+    "Computer Vision",
+    "Natural Language Processing",
+    "Data Engineering",
+    "Feature Engineering",
+    "ML Pipeline Development",
+    "Model Deployment",
+    "Prompt Engineering",
+    "Stateful Agent Orchestration",
+    "Hyperparameter Tuning",
+    "Model Fine-tuning"
   ],
 
   "languages": [
     "Python",
-    "C++",
-    "JavaScript"
+    "Java",
+    "JavaScript",
+    "C"
   ],
 
   "frameworks": [
     "PyTorch",
+    "PyTorch Geometric",
     "TensorFlow",
+    "LangGraph",
+    "LangChain",
+    "LangChain-Ollama",
     "FastAPI",
-    "React"
+    "Node.js",
+    "Express.js"
   ],
 
   "libraries": [
+    "Hugging Face Transformers",
+    "FAISS",
+    "Sentence Transformers",
     "NumPy",
     "Pandas",
-    "Scikit-learn",
-    "HuggingFace Transformers",
-    "LangChain"
+    "OpenCV",
+    "Streamlit",
+    "Gradio",
+    "Scikit-learn"
   ],
 
   "technologies": [
     "Docker",
     "Git",
-    "AWS",
+    "GitHub",
+    "MongoDB",
     "PostgreSQL",
-    "REST APIs"
+    "SQL",
+    "REST APIs",
+    "JWT Authentication",
+    "Google Colab",
+    "Jupyter Notebook"
+  ],
+
+  "models_and_architectures": [
+    "GATv2",
+    "Vision Transformers (ViT)",
+    "Swin Transformer",
+    "ResNet",
+    "DeBERTa-v3",
+    "LLaMA 3.2",
+    "GPT-4",
+    "CNNs",
+    "ColBERT",
+    "BM25"
   ],
 
   "projects": [
     {
-      "name": "Project Name",
-      "description": "What it does in 1-2 lines",
-      "tech_used": ["Python", "PyTorch", "FastAPI"]
+      "name": "TruthGuard — Agentic RAG Pipeline",
+      "description": "Stateful multi-agent RAG system using LangGraph with 7 role-based agents for temporally-aware legal and regulatory QA. Hybrid retrieval using BM25, FAISS, ColBERT with cross-encoder reranking. Has a pending research publication.",
+      "tech_used": ["LangGraph", "LangChain", "GPT-4", "ColBERT", "FAISS", "FastAPI", "DeBERTa-v3", "Transformers"]
     },
     {
-      "name": "Another Project",
-      "description": "What it does in 1-2 lines",
-      "tech_used": ["React", "Node.js", "MongoDB"]
+      "name": "Multi-Agent Debate System",
+      "description": "Stateful multi-agent debate system using LangGraph with role-based agents (Scientist, Philosopher, Judge) and LLaMA 3.2 via LangChain-Ollama. Includes semantic similarity scoring and production-grade validation.",
+      "tech_used": ["LangGraph", "LangChain", "LLaMA 3.2", "Sentence Transformers", "Python"]
+    },
+    {
+      "name": "Top-K Stock Ranking Using GNNs (FinGAT)",
+      "description": "Graph-based stock ranking model using GATv2 capturing relational dependencies across Indian stocks and S&P 500. 32+ engineered features, 73% baseline accuracy.",
+      "tech_used": ["PyTorch", "PyTorch Geometric", "GATv2"]
+    },
+    {
+      "name": "Fraud Detection Using Graph Learning and RL",
+      "description": "Fraud detection combining TSSGC with DQN-based decision optimization for transaction networks. Used SMOTE for class imbalance and KNN-based graph representations.",
+      "tech_used": ["PyTorch", "TSSGC", "DQN", "SMOTE"]
+    },
+    {
+      "name": "Stale Fruit Detection System",
+      "description": "Two-stage computer vision pipeline using CNN filtering followed by ViT and Swin Transformer for fruit freshness classification. Deployed as interactive web app with Streamlit/Gradio.",
+      "tech_used": ["PyTorch", "ViT", "Swin Transformer", "CNNs", "Streamlit", "Gradio"]
     }
   ],
 
   "experience": [
     {
-      "company": "Company Name (if any)",
-      "role": "Intern / Part-time",
-      "duration": "May 2024 - July 2024",
-      "description": "What you did"
+      "company": "Realpage",
+      "role": "AI/ML Intern",
+      "duration": "May 2026 - Present",
+      "description": "Integrated AI-powered backend endpoint with Worker to fetch and summarize notices dynamically. Built trigger-based UI feature using AI Worker service for real-time notice aggregation. Connected frontend to deployed AI Backend Worker for on-demand data retrieval."
     }
   ],
 
-  "certifications": [
-    "AWS Cloud Practitioner",
-    "DeepLearning.AI ML Specialization"
-  ],
+  "certifications": [],
 
   "achievements": [
-    "Ranked Top 100 in XYZ Hackathon",
-    "5-star on HackerRank Python"
+    "1st Prize in college-level C programming competition — Water Bill Management System",
+    "2nd Prize at NGIT Hackathon (inter-college) — AI/ML deepfake detection solution",
+    "Solved 350+ LeetCode problems focusing on medium-difficulty algorithmic challenges",
+    "Built end-to-end ML pipelines across FinTech, Computer Vision, NLP, and Agentic AI domains",
+    "Research publication pending: TruthGuard — Agentic RAG Pipeline for Legal QA",
+    "Project completion certificates at Project School, KMCE"
   ],
 
-  "github": "https://github.com/yourusername",
-  "linkedin": "https://linkedin.com/in/yourusername",
+  "github": "https://github.com/sucheer777",
+  "linkedin": "https://linkedin.com/in/sucheer-ch",
 
   "preferred_roles": [
-    "SWE Intern",
     "AI/ML Intern",
-    "Backend Intern",
     "GenAI Intern",
+    "LLM Engineer Intern",
+    "Agentic AI Intern",
+    "ML Engineer Intern",
+    "Applied AI Intern",
+    "Deep Learning Intern",
+    "AI Research Intern",
+    "Backend AI Intern",
+    "MLOps Intern",
     "Data Science Intern",
-    "MLOps Intern"
+    "SWE Intern"
   ],
 
   "preferred_locations": [
     "Remote",
-    "Bangalore",
     "Hyderabad",
+    "Bangalore",
     "Mumbai",
     "Delhi NCR"
   ],

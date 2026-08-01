@@ -1,0 +1,178 @@
+{
+  "seen_links": [
+    "https://www.foundit.in/job/data-science-ml-internship-ahmedabad-sparks-to-ideas-navsari-55489807",
+    "https://gethiredfaster.in/ties-ai-engineering-intern-ppo-hiring-2026-noida",
+    "https://wellfound.com/jobs/4289663-ai-data-intern",
+    "https://unstop.com/internships/aiml-engineer-internship-b2world-1607737",
+    "https://gethiredfaster.in/anakin-hiring-software-engineering-intern-ppo-jobs-in-bengaluru-india-2026",
+    "https://gethiredfaster.in/ant-group-hiring-software-engineering-intern-ppo-hyderabad",
+    "https://cloudsoftsol.com/jobs/google-software-engineering-internship-gcp-java-spring-boot-hyderabad-2026",
+    "https://www.dice.com/jobs/q-2026+ai/ml+intern+-+machine+learning+engineer+intern-l-remote-jobs",
+    "https://unstop.com/internships/aiml-engineering-internship-greecode-1553303",
+    "https://in.indeed.com/q-ai-ml-internship-india-jobs.html",
+    "https://in.linkedin.com/jobs/2026-internships-google-amazon-microsoft-meta-jobs",
+    "https://www.glassdoor.co.in/job/india-llm-intern-jobs-srch_il.0,5_in115_ko6,16.htm",
+    "https://placementdrive.in/job/amgen-data-scientist-job-openings-2026",
+    "https://coursejoiner.com/uncategorized/applied-scientist-internship-ai-llm",
+    "https://in.linkedin.com/jobs/view/data-science-intern-at-ebay-4442852361",
+    "https://www.rgjobs.in/job/1731/engineering-intern-gen-ai-for-fp-a-platform-remote-us-at-drivetrain-rag-llm-agentic-ai-internship",
+    "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026"
+  ],
+  "seen_keys": [
+    "datafoundry::ai ml intern",
+    "drivetrain::gen ai intern",
+    "tiktok::ai/ml intern",
+    "google::software engineering intern",
+    "greecode::ai/ml engineering intern",
+    "b2world::ai/ml engineer intern",
+    "various::llm intern",
+    "ebay::data science intern",
+    "microsoft::applied scientist intern",
+    "sparks to ideas::data science/ml intern",
+    "ties::ai engineering intern",
+    "the/nudge institute::ai & data intern",
+    "techolution::generative ai / python ai intern",
+    "anakin::software engineering intern",
+    "amgen::data scientist intern",
+    "google::ai/ml intern",
+    "ant group::software engineering intern"
+  ],
+  "history": [
+    {
+      "date": "2026-08-01",
+      "company": "Microsoft",
+      "role": "Applied Scientist Intern",
+      "link": "https://coursejoiner.com/uncategorized/applied-scientist-internship-ai-llm/",
+      "stipend": "\u20b91.5L-\u20b92.5L total stipend",
+      "ppo": "High"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "TIES",
+      "role": "AI Engineering Intern",
+      "link": "https://gethiredfaster.in/ties-ai-engineering-intern-ppo-hiring-2026-noida/",
+      "stipend": "Rs. 35,000 - Rs. 40,000 per month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Google",
+      "role": "AI/ML Intern",
+      "link": "https://in.linkedin.com/jobs/2026-internships-google-amazon-microsoft-meta-jobs",
+      "stipend": "Not publicly available",
+      "ppo": "High"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Amgen",
+      "role": "Data Scientist Intern",
+      "link": "https://placementdrive.in/job/amgen-data-scientist-job-openings-2026",
+      "stipend": "Not publicly available",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "The/Nudge Institute",
+      "role": "AI & Data Intern",
+      "link": "https://wellfound.com/jobs/4289663-ai-data-intern",
+      "stipend": "Not publicly available",
+      "ppo": "Low"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "eBay",
+      "role": "Data Science Intern",
+      "link": "https://in.linkedin.com/jobs/view/data-science-intern-at-ebay-4442852361",
+      "stipend": "Not publicly available",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "TikTok",
+      "role": "AI/ML Intern",
+      "link": "https://www.dice.com/jobs/q-2026+AI/ML+Intern+-+Machine+Learning+Engineer+Intern-l-Remote-jobs",
+      "stipend": "Not publicly available",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Sparks to Ideas",
+      "role": "Data Science/ML Intern",
+      "link": "https://www.foundit.in/job/data-science-ml-internship-ahmedabad-sparks-to-ideas-navsari-55489807",
+      "stipend": "Not publicly available",
+      "ppo": "Low"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Anakin",
+      "role": "Software Engineering Intern",
+      "link": "https://gethiredfaster.in/anakin-hiring-software-engineering-intern-ppo-jobs-in-bengaluru-india-2026/",
+      "stipend": "Not publicly available",
+      "ppo": "Low"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Greecode",
+      "role": "AI/ML Engineering Intern",
+      "link": "https://unstop.com/internships/aiml-engineering-internship-greecode-1553303",
+      "stipend": "Not publicly available",
+      "ppo": "Low"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "B2World",
+      "role": "AI/ML Engineer Intern",
+      "link": "https://unstop.com/internships/aiml-engineer-internship-b2world-1607737",
+      "stipend": "Not publicly available",
+      "ppo": "Low"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Various",
+      "role": "LLM Intern",
+      "link": "https://www.glassdoor.co.in/Job/india-llm-intern-jobs-SRCH_IL.0,5_IN115_KO6,16.htm",
+      "stipend": "Not publicly available",
+      "ppo": "Not publicly available"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Techolution",
+      "role": "Generative AI / Python AI Intern",
+      "link": "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026/",
+      "stipend": "Not publicly available",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Datafoundry",
+      "role": "AI ML Intern",
+      "link": "https://in.indeed.com/q-ai-ml-internship-india-jobs.html",
+      "stipend": "Not publicly available",
+      "ppo": "Low"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Drivetrain",
+      "role": "GEN AI Intern",
+      "link": "https://www.rgjobs.in/job/1731/engineering-intern-gen-ai-for-fp-a-platform-remote-us-at-drivetrain-rag-llm-agentic-ai-internship",
+      "stipend": "Not publicly available",
+      "ppo": "Not publicly available"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Ant Group",
+      "role": "Software Engineering Intern",
+      "link": "https://gethiredfaster.in/ant-group-hiring-software-engineering-intern-ppo-hyderabad/",
+      "stipend": "\u20b930,000 per month",
+      "ppo": "Not publicly available"
+    },
+    {
+      "date": "2026-08-01",
+      "company": "Google",
+      "role": "Software Engineering Intern",
+      "link": "https://cloudsoftsol.com/jobs/google-software-engineering-internship-gcp-java-spring-boot-hyderabad-2026/",
+      "stipend": "Not publicly available",
+      "ppo": "High"
+    }
+  ]
+}

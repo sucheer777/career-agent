@@ -75,6 +75,10 @@ def format_jobs_text(jobs: list[dict]) -> str:
         lines.append(f"    PPO Odds    : {ppo}")
         lines.append(f"    Skills      : {skills}")
         lines.append(f"    Why Match   : {match}")
+        rating  = job.get("company_rating", "Not publicly available")
+        review  = job.get("intern_review_summary", "Not publicly available")
+        lines.append(f"    Rating      : {rating}")
+        lines.append(f"    Reviews     : {review}")
 
         if missing:
             lines.append(f"    Gap Skills  : {', '.join(missing)}")
