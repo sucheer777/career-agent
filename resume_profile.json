@@ -1,0 +1,100 @@
+{
+  "name": "Your Full Name",
+  "email": "your@email.com",
+  "degree": "B.Tech Computer Science",
+  "graduation_year": "2026",
+  "college": "Your College Name",
+  "cgpa": "8.5",
+
+  "skills": [
+    "Machine Learning",
+    "Deep Learning",
+    "Python",
+    "Data Structures",
+    "Algorithms"
+  ],
+
+  "languages": [
+    "Python",
+    "C++",
+    "JavaScript"
+  ],
+
+  "frameworks": [
+    "PyTorch",
+    "TensorFlow",
+    "FastAPI",
+    "React"
+  ],
+
+  "libraries": [
+    "NumPy",
+    "Pandas",
+    "Scikit-learn",
+    "HuggingFace Transformers",
+    "LangChain"
+  ],
+
+  "technologies": [
+    "Docker",
+    "Git",
+    "AWS",
+    "PostgreSQL",
+    "REST APIs"
+  ],
+
+  "projects": [
+    {
+      "name": "Project Name",
+      "description": "What it does in 1-2 lines",
+      "tech_used": ["Python", "PyTorch", "FastAPI"]
+    },
+    {
+      "name": "Another Project",
+      "description": "What it does in 1-2 lines",
+      "tech_used": ["React", "Node.js", "MongoDB"]
+    }
+  ],
+
+  "experience": [
+    {
+      "company": "Company Name (if any)",
+      "role": "Intern / Part-time",
+      "duration": "May 2024 - July 2024",
+      "description": "What you did"
+    }
+  ],
+
+  "certifications": [
+    "AWS Cloud Practitioner",
+    "DeepLearning.AI ML Specialization"
+  ],
+
+  "achievements": [
+    "Ranked Top 100 in XYZ Hackathon",
+    "5-star on HackerRank Python"
+  ],
+
+  "github": "https://github.com/yourusername",
+  "linkedin": "https://linkedin.com/in/yourusername",
+
+  "preferred_roles": [
+    "SWE Intern",
+    "AI/ML Intern",
+    "Backend Intern",
+    "GenAI Intern",
+    "Data Science Intern",
+    "MLOps Intern"
+  ],
+
+  "preferred_locations": [
+    "Remote",
+    "Bangalore",
+    "Hyderabad",
+    "Mumbai",
+    "Delhi NCR"
+  ],
+
+  "minimum_stipend_inr": 15000,
+  "minimum_fte_ctc_lpa": 8
+}
