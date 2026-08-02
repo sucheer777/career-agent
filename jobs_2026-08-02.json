@@ -1,0 +1,78 @@
+[
+  {
+    "rank": 1,
+    "company": "Techolution",
+    "role": "Generative AI / Python AI Intern",
+    "location": "Hyderabad",
+    "mode": "Onsite",
+    "duration": "Not publicly available",
+    "stipend": "Not publicly available",
+    "expected_fte_ctc": "Not publicly available",
+    "ppo_probability": "Medium",
+    "ppo_evidence": "This program is specifically for job-seeking developers and is offered at no cost to qualified applicants as part of the ProTech program.",
+    "company_rating": "3.8/5",
+    "intern_review_summary": "85% of Techolution employees would recommend working there, with a salary and benefits rating of 3.9 out of 5.",
+    "required_skills": [
+      "LLM",
+      "RAG",
+      "AI",
+      "Python"
+    ],
+    "why_strong_match": "This role is a strong match for Cholleti Sucheer because it involves working with Generative AI and Python, which aligns with their skills in Machine Learning and Deep Learning. The company's high rating and positive intern reviews also make it an attractive opportunity.",
+    "missing_skills": [],
+    "apply_link": "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026/",
+    "deadline": "Not publicly available",
+    "date_posted": "Not publicly available",
+    "source": "Cloudsoftsol",
+    "verified": true
+  },
+  {
+    "rank": 2,
+    "company": "BreakoutAI",
+    "role": "Artificial Intelligence Intern",
+    "location": "Remote",
+    "mode": "Remote",
+    "duration": "Not publicly available",
+    "stipend": "\u20b9 20K/Month - 80K/Month",
+    "expected_fte_ctc": "Not publicly available",
+    "ppo_probability": "Medium",
+    "ppo_evidence": "INR 10 lakhs, PPIs and Much More! India's Biggest internship program.",
+    "company_rating": "Not publicly available",
+    "intern_review_summary": "No public intern reviews found.",
+    "required_skills": [
+      "AI"
+    ],
+    "why_strong_match": "This role is a strong match for Cholleti Sucheer because it involves working with Artificial Intelligence, which aligns with their skills in Machine Learning and Deep Learning. The company's competitive salary and benefits package also make it an attractive opportunity.",
+    "missing_skills": [],
+    "apply_link": "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
+    "deadline": "Not publicly available",
+    "date_posted": "Not publicly available",
+    "source": "Unstop",
+    "verified": true
+  },
+  {
+    "rank": 3,
+    "company": "SuperKalam",
+    "role": "AI Applied Engineer - Voice First (Internship)",
+    "location": "Remote",
+    "mode": "Remote",
+    "duration": "4 to 6+ months",
+    "stipend": "INR 25 - 40k per month",
+    "expected_fte_ctc": "Not publicly available",
+    "ppo_probability": "High",
+    "ppo_evidence": "SuperKalam's PPO conversion rate is 70%+ because interns work on revenue-critical features.",
+    "company_rating": "Not publicly available",
+    "intern_review_summary": "No public intern reviews found.",
+    "required_skills": [
+      "AI",
+      "Python"
+    ],
+    "why_strong_match": "This role is a strong match for Cholleti Sucheer because it involves working with AI and Python, which aligns with their skills in Machine Learning and Deep Learning. The company's high PPO conversion rate also makes it an attractive opportunity.",
+    "missing_skills": [],
+    "apply_link": "https://www.ycombinator.com/companies/superkalam/jobs/DKwCjWa-ai-applied-engineer-voice-first-internship",
+    "deadline": "Not publicly available",
+    "date_posted": "Not publicly available",
+    "source": "YCombinator",
+    "verified": true
+  }
+]

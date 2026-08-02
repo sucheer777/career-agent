@@ -58,3 +58,11 @@ jobs:
           git add seen_jobs.json
           git diff --staged --quiet || git commit -m "chore: update job memory $(date +%Y-%m-%d)"
           git push
+
+      - name: Run AI Career Agent
+        env:
+          GROK_API_KEY:   ${{ secrets.GROK_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM:     ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO:       ${{ secrets.EMAIL_TO }}
+          SERPAPI_KEY:    ${{ secrets.SERPAPI_KEY }}

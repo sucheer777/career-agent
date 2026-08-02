@@ -5,6 +5,9 @@
   "graduation_year": "2027",
   "college": "Keshav Memorial College of Engineering",
   "cgpa": "7.89",
+  "current_year": "4th Year B.Tech",
+  "batch": "2027",
+  "student_status": "Pre-final year, currently interning at Realpage",
 
   "skills": [
     "Machine Learning",
