@@ -1,0 +1,75 @@
+[
+  {
+    "rank": 1,
+    "company": "Amazon",
+    "role": "ML Summer School Intern",
+    "location": "Remote",
+    "mode": "Remote",
+    "duration": "Not publicly available",
+    "stipend": "Not publicly available",
+    "expected_fte_ctc": "Not publicly available",
+    "ppo_probability": "Medium",
+    "ppo_evidence": "Amazon conversion rates are low for off-campus interns this year. Conversion depends on your work.",
+    "company_rating": "3.6/5",
+    "intern_review_summary": "Intern professionals rate their compensation and benefits at Amazon with 4.5 out of 5 stars based on 188 anonymously submitted employee reviews.",
+    "required_skills": [
+      "Machine Learning"
+    ],
+    "why_strong_match": "This role is a strong match for Cholleti Sucheer because it involves machine learning, which is one of their skills. Additionally, the remote location and medium PPO probability make it a viable option.",
+    "missing_skills": [],
+    "apply_link": "https://unstop.com/hackathons/crp-amazon-ml-summer-school-2026-amazon-1688859",
+    "deadline": "Not publicly available",
+    "date_posted": "Not publicly available",
+    "source": "unstop.com",
+    "verified": true
+  },
+  {
+    "rank": 2,
+    "company": "B2World",
+    "role": "AI/ML Engineer Intern",
+    "location": "Remote",
+    "mode": "Remote",
+    "duration": "3-6 months",
+    "stipend": "Not publicly available",
+    "expected_fte_ctc": "Not publicly available",
+    "ppo_probability": "Medium",
+    "ppo_evidence": "AI/ML Engineer Internship at B2World | Remote | Job Title: AI/ML Engineer Intern | Company: B2World | Location: Remote | Duration: 3-6 months | Stipend: Offer (PPO), based on performance.",
+    "company_rating": "Not publicly available",
+    "intern_review_summary": "No public intern reviews found.",
+    "required_skills": [
+      "AI/ML"
+    ],
+    "why_strong_match": "This role is a strong match for Cholleti Sucheer because it involves AI/ML, which is one of their skills. Additionally, the remote location and medium PPO probability make it a viable option.",
+    "missing_skills": [],
+    "apply_link": "https://unstop.com/internships/aiml-engineer-internship-b2world-1607737",
+    "deadline": "Not publicly available",
+    "date_posted": "Not publicly available",
+    "source": "unstop.com",
+    "verified": true
+  },
+  {
+    "rank": 3,
+    "company": "Deep Dive AI",
+    "role": "Gen AI/ML/Data Science Intern",
+    "location": "Remote",
+    "mode": "Remote",
+    "duration": "Not publicly available",
+    "stipend": "Not publicly available",
+    "expected_fte_ctc": "Not publicly available",
+    "ppo_probability": "Medium",
+    "ppo_evidence": "No PPO evidence found",
+    "company_rating": "Not publicly available",
+    "intern_review_summary": "No public intern reviews found.",
+    "required_skills": [
+      "AI/ML",
+      "Data Science"
+    ],
+    "why_strong_match": "This role is a strong match for Cholleti Sucheer because it involves AI/ML and data science, which are some of their skills. Additionally, the remote location makes it a viable option.",
+    "missing_skills": [],
+    "apply_link": "https://unstop.com/internship/data-analysis-internship",
+    "deadline": "Not publicly available",
+    "date_posted": "Not publicly available",
+    "source": "unstop.com",
+    "verified": true
+  }
+]

@@ -108,9 +108,12 @@ def send_email(jobs: list[dict]):
 
     print(f"📧 Sending email to {EMAIL_TO}...")
 
+    # Support multiple emails comma-separated in EMAIL_TO
+    to_list = [email.strip() for email in EMAIL_TO.split(",") if email.strip()]
+
     response = resend.Emails.send({
         "from":    EMAIL_FROM,
-        "to":      EMAIL_TO,
+        "to":      to_list,
         "subject": subject,
         "text":    body,
     })
