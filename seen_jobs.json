@@ -1,1 +1,38 @@
-{"seen_links": [], "seen_keys": [], "history": []}
+{
+  "seen_links": [
+    "https://www.instagram.com/reel/dw8klsseqbg",
+    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
+    "https://www.instagram.com/reel/dvif9lbclzk"
+  ],
+  "seen_keys": [
+    "crisil::gen ai intern",
+    "breakoutai::artificial intelligence intern",
+    "henkel adhesive technologies::ai / ml intern"
+  ],
+  "history": [
+    {
+      "date": "2026-08-03",
+      "company": "Henkel Adhesive Technologies",
+      "role": "AI / ML Intern",
+      "link": "https://www.instagram.com/reel/DW8kLsSEqBg/",
+      "stipend": "\u20b935,000/month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-03",
+      "company": "CRISIL",
+      "role": "Gen AI Intern",
+      "link": "https://www.instagram.com/reel/DVIF9lBCLZk/",
+      "stipend": "\u20b925,000/month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-03",
+      "company": "BreakoutAI",
+      "role": "Artificial Intelligence Intern",
+      "link": "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
+      "stipend": "\u20b920K/Month - 80K/Month",
+      "ppo": "Medium"
+    }
+  ]
+}
