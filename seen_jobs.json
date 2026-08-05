@@ -1,17 +1,21 @@
 {
   "seen_links": [
-    "https://www.instagram.com/reel/dvif9lbclzk",
-    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
     "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026",
+    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
+    "https://www.instagram.com/reel/dvif9lbclzk",
+    "https://www.instagram.com/reel/dwfvrazk9tj",
     "https://www.instagram.com/reel/dw8klsseqbg",
+    "https://www.instagram.com/p/drtsvwtibpq",
     "https://www.instagram.com/reel/dwmnyzje0if"
   ],
   "seen_keys": [
-    "crisil::gen ai intern",
     "techolution::generative ai / python ai intern",
+    "unsiloed ai::ml intern",
+    "crisil::gen ai intern",
     "breakoutai::artificial intelligence intern",
     "unsiloed ai::ml engineer intern",
-    "henkel adhesive technologies::ai / ml intern"
+    "henkel adhesive technologies::ai / ml intern",
+    "cred::agentic ai intern"
   ],
   "history": [
     {
@@ -53,6 +57,22 @@
       "link": "https://www.instagram.com/reel/DWMNyzJE0iF/",
       "stipend": "\u20b91.5 Lakh/month",
       "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-05",
+      "company": "CRED",
+      "role": "Agentic AI Intern",
+      "link": "https://www.instagram.com/p/DRtsVwTiBpq/",
+      "stipend": "\u20b950,000/month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-05",
+      "company": "Unsiloed AI",
+      "role": "ML Intern",
+      "link": "https://www.instagram.com/reel/DWfvrAzk9Tj/",
+      "stipend": "\u20b91.5L/month",
+      "ppo": "High"
     }
   ]
 }
