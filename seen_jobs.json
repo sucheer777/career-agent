@@ -1,21 +1,25 @@
 {
   "seen_links": [
-    "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026",
-    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
     "https://www.instagram.com/reel/dvif9lbclzk",
-    "https://www.instagram.com/reel/dwfvrazk9tj",
-    "https://www.instagram.com/reel/dw8klsseqbg",
+    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
+    "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
+    "https://www.instagram.com/reel/dwmnyzje0if",
+    "https://www.ycombinator.com/companies/superkalam/jobs/dkwcjwa-ai-applied-engineer-voice-first-internship",
     "https://www.instagram.com/p/drtsvwtibpq",
-    "https://www.instagram.com/reel/dwmnyzje0if"
+    "https://www.instagram.com/reel/dw8klsseqbg",
+    "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026",
+    "https://www.instagram.com/reel/dwfvrazk9tj"
   ],
   "seen_keys": [
+    "breakoutai::artificial intelligence intern",
+    "crisil::gen ai intern",
+    "qualcomm::intern",
     "techolution::generative ai / python ai intern",
     "unsiloed ai::ml intern",
-    "crisil::gen ai intern",
-    "breakoutai::artificial intelligence intern",
-    "unsiloed ai::ml engineer intern",
+    "superkalam::ai applied engineer - voice first (internship)",
+    "cred::agentic ai intern",
     "henkel adhesive technologies::ai / ml intern",
-    "cred::agentic ai intern"
+    "unsiloed ai::ml engineer intern"
   ],
   "history": [
     {
@@ -73,6 +77,22 @@
       "link": "https://www.instagram.com/reel/DWfvrAzk9Tj/",
       "stipend": "\u20b91.5L/month",
       "ppo": "High"
+    },
+    {
+      "date": "2026-08-06",
+      "company": "SuperKalam",
+      "role": "AI Applied Engineer - Voice First (Internship)",
+      "link": "https://www.ycombinator.com/companies/superkalam/jobs/DKwCjWa-ai-applied-engineer-voice-first-internship",
+      "stipend": "INR 25-40k per month",
+      "ppo": "High"
+    },
+    {
+      "date": "2026-08-06",
+      "company": "Qualcomm",
+      "role": "Intern",
+      "link": "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
+      "stipend": "Not publicly available",
+      "ppo": "Medium"
     }
   ]
 }
