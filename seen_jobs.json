@@ -1,25 +1,27 @@
 {
   "seen_links": [
-    "https://www.instagram.com/reel/dvif9lbclzk",
-    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
-    "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
-    "https://www.instagram.com/reel/dwmnyzje0if",
-    "https://www.ycombinator.com/companies/superkalam/jobs/dkwcjwa-ai-applied-engineer-voice-first-internship",
     "https://www.instagram.com/p/drtsvwtibpq",
     "https://www.instagram.com/reel/dw8klsseqbg",
+    "https://www.instagram.com/reel/dwmnyzje0if",
+    "https://thejobcompany.co.in/job-category/batch/2027",
     "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026",
-    "https://www.instagram.com/reel/dwfvrazk9tj"
+    "https://www.ycombinator.com/companies/superkalam/jobs/dkwcjwa-ai-applied-engineer-voice-first-internship",
+    "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
+    "https://www.instagram.com/reel/dvif9lbclzk",
+    "https://www.instagram.com/reel/dwfvrazk9tj",
+    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755"
   ],
   "seen_keys": [
     "breakoutai::artificial intelligence intern",
     "crisil::gen ai intern",
     "qualcomm::intern",
-    "techolution::generative ai / python ai intern",
-    "unsiloed ai::ml intern",
-    "superkalam::ai applied engineer - voice first (internship)",
     "cred::agentic ai intern",
+    "unsiloed ai::ml intern",
+    "branch international::software engineer intern",
+    "unsiloed ai::ml engineer intern",
+    "techolution::generative ai / python ai intern",
     "henkel adhesive technologies::ai / ml intern",
-    "unsiloed ai::ml engineer intern"
+    "superkalam::ai applied engineer - voice first (internship)"
   ],
   "history": [
     {
@@ -92,6 +94,14 @@
       "role": "Intern",
       "link": "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
       "stipend": "Not publicly available",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-07",
+      "company": "Branch International",
+      "role": "Software Engineer Intern",
+      "link": "https://thejobcompany.co.in/job-category/batch/2027",
+      "stipend": "\u20b97.5K-\u20b920K/month",
       "ppo": "Medium"
     }
   ]
