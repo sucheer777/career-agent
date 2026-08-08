@@ -1,26 +1,36 @@
 {
   "seen_links": [
-    "https://www.instagram.com/p/drtsvwtibpq",
-    "https://www.instagram.com/reel/dw8klsseqbg",
-    "https://www.instagram.com/reel/dwmnyzje0if",
-    "https://thejobcompany.co.in/job-category/batch/2027",
-    "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026",
-    "https://www.ycombinator.com/companies/superkalam/jobs/dkwcjwa-ai-applied-engineer-voice-first-internship",
-    "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
     "https://www.instagram.com/reel/dvif9lbclzk",
+    "https://www.instagram.com/reel/dw8klsseqbg",
+    "https://www.instagram.com/p/drtsvwtibpq",
+    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
+    "https://www.instagram.com/reel/dwmnyzje0if",
+    "https://www.instagram.com/reel/dxjgfhoe7qa/?hl=en",
+    "https://www.instagram.com/p/dttl1gfd2s2",
     "https://www.instagram.com/reel/dwfvrazk9tj",
-    "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755"
+    "https://www.ycombinator.com/companies/superkalam/jobs/dkwcjwa-ai-applied-engineer-voice-first-internship",
+    "https://thejobcompany.co.in/job-category/batch/2027",
+    "https://jobs.apple.com/en-in/search?team=internships-stdnt-intrn",
+    "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
+    "https://www.instagram.com/reel/dxeekqmd25t",
+    "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026",
+    "https://www.instagram.com/reel/dx1btnktbam"
   ],
   "seen_keys": [
-    "breakoutai::artificial intelligence intern",
-    "crisil::gen ai intern",
-    "qualcomm::intern",
-    "cred::agentic ai intern",
-    "unsiloed ai::ml intern",
-    "branch international::software engineer intern",
-    "unsiloed ai::ml engineer intern",
-    "techolution::generative ai / python ai intern",
     "henkel adhesive technologies::ai / ml intern",
+    "qualcomm::intern",
+    "branch international::software engineer intern",
+    "cred::agentic ai intern",
+    "techolution::generative ai / python ai intern",
+    "not specified::ml engineer intern",
+    "henkel adhesive technologies::ai intern",
+    "not specified::ai engineer intern",
+    "breakoutai::artificial intelligence intern",
+    "unsiloed ai::ml engineer intern",
+    "apple::intern",
+    "unsiloed ai::ml intern",
+    "crisil::gen ai intern",
+    "google::software developer intern",
     "superkalam::ai applied engineer - voice first (internship)"
   ],
   "history": [
@@ -102,6 +112,46 @@
       "role": "Software Engineer Intern",
       "link": "https://thejobcompany.co.in/job-category/batch/2027",
       "stipend": "\u20b97.5K-\u20b920K/month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-08",
+      "company": "Google",
+      "role": "Software Developer Intern",
+      "link": "https://www.instagram.com/reel/DXJgfhOE7QA/?hl=en",
+      "stipend": "\u20b920,000/month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-08",
+      "company": "Apple",
+      "role": "Intern",
+      "link": "https://jobs.apple.com/en-in/search?team=internships-STDNT-INTRN",
+      "stipend": "Not publicly available",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-08",
+      "company": "Not specified",
+      "role": "ML Engineer Intern",
+      "link": "https://www.instagram.com/reel/DXeeKqMD25T/",
+      "stipend": "\u20b930,000/month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-08",
+      "company": "Not specified",
+      "role": "AI Engineer Intern",
+      "link": "https://www.instagram.com/reel/DX1btNKTBAm/",
+      "stipend": "\u20b925,000/month",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-08",
+      "company": "Henkel Adhesive Technologies",
+      "role": "AI Intern",
+      "link": "https://www.instagram.com/p/DTtl1GFD2S2/",
+      "stipend": "\u20b935,000/month",
       "ppo": "Medium"
     }
   ]
