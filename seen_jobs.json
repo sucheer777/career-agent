@@ -1,37 +1,43 @@
 {
   "seen_links": [
-    "https://www.instagram.com/reel/dvif9lbclzk",
-    "https://www.instagram.com/reel/dw8klsseqbg",
-    "https://www.instagram.com/p/drtsvwtibpq",
     "https://unstop.com/internships/artificial-intelligence-internship-breakoutai-1682755",
-    "https://www.instagram.com/reel/dwmnyzje0if",
-    "https://www.instagram.com/reel/dxjgfhoe7qa/?hl=en",
-    "https://www.instagram.com/p/dttl1gfd2s2",
-    "https://www.instagram.com/reel/dwfvrazk9tj",
-    "https://www.ycombinator.com/companies/superkalam/jobs/dkwcjwa-ai-applied-engineer-voice-first-internship",
     "https://thejobcompany.co.in/job-category/batch/2027",
+    "https://www.instagram.com/reel/dwfvrazk9tj",
+    "https://www.instagram.com/p/dttl1gfd2s2",
     "https://jobs.apple.com/en-in/search?team=internships-stdnt-intrn",
     "https://www.qualcomm.com/company/careers/internships-and-early-in-career-opportunities/india",
+    "https://www.instagram.com/upgradofflinepune/p/dbulgagjadm",
+    "https://www.instagram.com/reel/dw8klsseqbg",
+    "https://gethiredfaster.in/heizen-hiring-sde-intern-ppo-remote-hyderabad-india-2026",
+    "https://www.instagram.com/reel/dxjgfhoe7qa/?hl=en",
+    "https://www.instagram.com/reel/dx1btnktbam",
+    "https://www.ycombinator.com/companies/superkalam/jobs/dkwcjwa-ai-applied-engineer-voice-first-internship",
     "https://www.instagram.com/reel/dxeekqmd25t",
+    "https://www.instagram.com/reel/dvif9lbclzk",
+    "https://www.google.com/about/careers/applications/internships",
+    "https://www.instagram.com/p/drtsvwtibpq",
     "https://cloudsoftsol.com/jobs/techolution-generative-ai-python-intern-llm-rag-hyderabad-2026",
-    "https://www.instagram.com/reel/dx1btnktbam"
+    "https://www.instagram.com/reel/dwmnyzje0if"
   ],
   "seen_keys": [
-    "henkel adhesive technologies::ai / ml intern",
-    "qualcomm::intern",
-    "branch international::software engineer intern",
-    "cred::agentic ai intern",
-    "techolution::generative ai / python ai intern",
-    "not specified::ml engineer intern",
-    "henkel adhesive technologies::ai intern",
+    "heizen::sde intern",
+    "salesforce::summer 2027 intern \u2013 software engineer",
     "not specified::ai engineer intern",
-    "breakoutai::artificial intelligence intern",
     "unsiloed ai::ml engineer intern",
-    "apple::intern",
     "unsiloed ai::ml intern",
+    "henkel adhesive technologies::ai intern",
+    "cred::agentic ai intern",
     "crisil::gen ai intern",
     "google::software developer intern",
-    "superkalam::ai applied engineer - voice first (internship)"
+    "superkalam::ai applied engineer - voice first (internship)",
+    "apple::intern",
+    "google::internships",
+    "breakoutai::artificial intelligence intern",
+    "henkel adhesive technologies::ai / ml intern",
+    "not specified::ml engineer intern",
+    "techolution::generative ai / python ai intern",
+    "qualcomm::intern",
+    "branch international::software engineer intern"
   ],
   "history": [
     {
@@ -153,6 +159,30 @@
       "link": "https://www.instagram.com/p/DTtl1GFD2S2/",
       "stipend": "\u20b935,000/month",
       "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-09",
+      "company": "Heizen",
+      "role": "SDE Intern",
+      "link": "https://gethiredfaster.in/heizen-hiring-sde-intern-ppo-remote-hyderabad-india-2026/",
+      "stipend": "Not publicly available",
+      "ppo": "Medium"
+    },
+    {
+      "date": "2026-08-09",
+      "company": "Salesforce",
+      "role": "Summer 2027 Intern \u2013 Software Engineer",
+      "link": "https://www.instagram.com/upgradofflinepune/p/DbulGagjADm/",
+      "stipend": "80K - 1.5L/Month",
+      "ppo": "High"
+    },
+    {
+      "date": "2026-08-09",
+      "company": "Google",
+      "role": "Internships",
+      "link": "https://www.google.com/about/careers/applications/internships",
+      "stipend": "Not publicly available",
+      "ppo": "High"
     }
   ]
 }
