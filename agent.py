@@ -265,7 +265,7 @@ Include as many as possible — aim for 10-15 results minimum.
     time.sleep(2)
 
     response = client.chat.completions.create(
-        model="llama3-70b-8192",
+        model="qwen/qwen3.6-27b",
         messages=[
             {"role": "system", "content": "Return only valid JSON arrays. Start [ end ]. No other text."},
             {"role": "user",   "content": prompt},
@@ -435,7 +435,7 @@ Each object MUST have ALL these keys:
     time.sleep(2)
 
     response = client.chat.completions.create(
-        model="llama3-70b-8192",
+        model="qwen/qwen3.6-27b",
         messages=[
             {"role": "system", "content": "Extremely strict career advisor. Return only valid JSON arrays. No markdown. Quality over quantity."},
             {"role": "user",   "content": prompt},
