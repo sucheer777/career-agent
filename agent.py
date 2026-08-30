@@ -256,10 +256,10 @@ def search_jobs(profile: dict) -> tuple[list[dict], set]:
 
 
 # ── Format Results ────────────────────────────────────────────────────────────
-def format_results(results: list[dict], limit: int = 40) -> str:
+def format_results(results: list[dict], limit: int = 25) -> str:
     out = ""
     for i, r in enumerate(results[:limit], 1):
-        snippet = r["snippet"][:300].replace("\n", " ")
+        snippet = r["snippet"][:120].replace("\n", " ")
         date_str = f" | Posted: {r['date']}" if r.get("date") else ""
         out += f"[{i}] {r['title']}{date_str}\n    URL: {r['link']}\n    {snippet}\n\n"
     return out
@@ -345,7 +345,7 @@ Extract as many valid listings as possible (aim for 10+).
     raw  = groq_complete([
         {"role": "system", "content": "You extract job listings from search results. Return only valid JSON arrays. Start with [ and end with ]. No other text whatsoever."},
         {"role": "user",   "content": prompt},
-    ], max_tokens=4000)
+    ], max_tokens=2000)
 
     jobs = safe_parse_json_array(raw)
     if not jobs:
@@ -588,7 +588,18 @@ def run_agent() -> list[dict]:
         print("⚠️  No search results found.")
         return []
 
-    raw_jobs = extract_jobs(profile, raw_results, real_urls)
+    # Process in batches to stay under Groq token limit
+    raw_jobs = []
+    batch_size = 25
+    for i in range(0, len(raw_results), batch_size):
+        batch = raw_results[i:i+batch_size]
+        print(f"  📦 Processing batch {i//batch_size + 1}...")
+        batch_jobs = extract_jobs(profile, batch, real_urls)
+        raw_jobs.extend(batch_jobs)
+        time.sleep(3)
+
+    raw_jobs = deduplicate_jobs(raw_jobs)
+    print(f"  ✅ Total extracted after all batches: {len(raw_jobs)}\n")
 
     if not raw_jobs:
         print("⚠️  No jobs extracted.")
