@@ -275,9 +275,18 @@ Include as many as possible — aim for 10-15 results minimum.
     )
 
     raw = response.choices[0].message.content.strip()
+
+    # Strip thinking tags (qwen/deepseek models add these)
+    raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL)
+    raw = re.sub(r"<thinking>.*?</thinking>", "", raw, flags=re.DOTALL)
+
+    # Strip markdown fences
     raw = re.sub(r"^```(?:json)?\s*", "", raw)
     raw = re.sub(r"\s*```$",          "", raw)
 
+    raw = raw.strip()
+
+    # Extract JSON array
     m = re.search(r"\[.*\]", raw, re.DOTALL)
     if m:
         raw = m.group(0)
@@ -445,9 +454,18 @@ Each object MUST have ALL these keys:
     )
 
     raw = response.choices[0].message.content.strip()
+
+    # Strip thinking tags (qwen/deepseek models add these)
+    raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL)
+    raw = re.sub(r"<thinking>.*?</thinking>", "", raw, flags=re.DOTALL)
+
+    # Strip markdown fences
     raw = re.sub(r"^```(?:json)?\s*", "", raw)
     raw = re.sub(r"\s*```$",          "", raw)
 
+    raw = raw.strip()
+
+    # Extract JSON array
     m = re.search(r"\[.*\]", raw, re.DOTALL)
     if m:
         raw = m.group(0)
