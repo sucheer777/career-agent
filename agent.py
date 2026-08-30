@@ -265,7 +265,7 @@ Include as many as possible — aim for 10-15 results minimum.
     time.sleep(2)
 
     response = client.chat.completions.create(
-        model="qwen/qwen3.6-27b",
+        model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
             {"role": "system", "content": "Return only valid JSON arrays. Start [ end ]. No other text."},
             {"role": "user",   "content": prompt},
@@ -276,13 +276,18 @@ Include as many as possible — aim for 10-15 results minimum.
 
     raw = response.choices[0].message.content.strip()
 
-    # Strip thinking tags (qwen/deepseek models add these)
+    # Debug — show exactly what model returned
+    print("\n── RAW MODEL OUTPUT (first 300 chars) ──")
+    print(repr(raw[:300]))
+    print("────────────────────────────────────────\n")
+
+    # Strip thinking tags
     raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL)
     raw = re.sub(r"<thinking>.*?</thinking>", "", raw, flags=re.DOTALL)
 
     # Strip markdown fences
     raw = re.sub(r"^```(?:json)?\s*", "", raw)
-    raw = re.sub(r"\s*```$",          "", raw)
+    raw = re.sub(r"\s*```$", "", raw)
 
     raw = raw.strip()
 
@@ -291,7 +296,17 @@ Include as many as possible — aim for 10-15 results minimum.
     if m:
         raw = m.group(0)
 
-    jobs = json.loads(raw)
+    # If still empty return empty list instead of crashing
+    if not raw or raw in ("[]", "[ ]", ""):
+        print("  ⚠️  Model returned empty response — returning []")
+        return []
+
+    try:
+        jobs = json.loads(raw)
+    except json.JSONDecodeError as e:
+        print(f"  ❌ JSON parse failed: {e}")
+        print(f"  Raw content: {repr(raw[:500])}")
+        return []
 
     # Validate links against real search URLs
     for job in jobs:
@@ -444,7 +459,7 @@ Each object MUST have ALL these keys:
     time.sleep(2)
 
     response = client.chat.completions.create(
-        model="qwen/qwen3.6-27b",
+        model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
             {"role": "system", "content": "Extremely strict career advisor. Return only valid JSON arrays. No markdown. Quality over quantity."},
             {"role": "user",   "content": prompt},
@@ -455,13 +470,18 @@ Each object MUST have ALL these keys:
 
     raw = response.choices[0].message.content.strip()
 
-    # Strip thinking tags (qwen/deepseek models add these)
+    # Debug — show exactly what model returned
+    print("\n── RAW MODEL OUTPUT (first 300 chars) ──")
+    print(repr(raw[:300]))
+    print("────────────────────────────────────────\n")
+
+    # Strip thinking tags
     raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL)
     raw = re.sub(r"<thinking>.*?</thinking>", "", raw, flags=re.DOTALL)
 
     # Strip markdown fences
     raw = re.sub(r"^```(?:json)?\s*", "", raw)
-    raw = re.sub(r"\s*```$",          "", raw)
+    raw = re.sub(r"\s*```$", "", raw)
 
     raw = raw.strip()
 
@@ -470,7 +490,17 @@ Each object MUST have ALL these keys:
     if m:
         raw = m.group(0)
 
-    jobs = json.loads(raw)
+    # If still empty return empty list instead of crashing
+    if not raw or raw in ("[]", "[ ]", ""):
+        print("  ⚠️  Model returned empty response — returning []")
+        return []
+
+    try:
+        jobs = json.loads(raw)
+    except json.JSONDecodeError as e:
+        print(f"  ❌ JSON parse failed: {e}")
+        print(f"  Raw content: {repr(raw[:500])}")
+        return []
 
     # Hard PPO filter
     before = len(jobs)
