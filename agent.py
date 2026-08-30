@@ -1,5 +1,6 @@
 """
-AI Career Agent — Groq + Serper.dev + Strict PPO filter + Auto model fallback.
+AI Career Agent — Groq + Serper.dev
+Strict: recent jobs only, verified stipend+package, FTE evidence, 2027 batch, Hyderabad/Remote.
 """
 
 import os
@@ -7,7 +8,7 @@ import json
 import re
 import time
 import requests
-from datetime import date
+from datetime import date, timedelta
 from groq import Groq
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -25,9 +26,12 @@ if not SERPAPI_KEY:
 RESUME_PROFILE_PATH = os.path.join(os.path.dirname(__file__), "resume_profile.json")
 client = Groq(api_key=GROQ_API_KEY)
 
-ALLOWED_LOCATIONS = ["hyderabad", "remote", "work from home", "wfh"]
-MIN_RATING        = 3.5
-MIN_STIPEND_INR   = 10000
+# ── Filters ───────────────────────────────────────────────────────────────────
+ALLOWED_LOCATIONS  = ["hyderabad", "remote", "work from home", "wfh"]
+MIN_RATING         = 3.5
+MIN_STIPEND_INR    = 10000
+MIN_FTE_LPA        = 8
+MAX_DAYS_OLD       = 2       # only jobs posted within last 2 days
 
 FAKE_LINK_PATTERNS = [
     r"/job[s]?/\d+$",
@@ -37,7 +41,7 @@ FAKE_LINK_PATTERNS = [
     r"000000",
 ]
 
-# ── Auto model fallback list (tried in order) ─────────────────────────────────
+# ── Groq model fallback list ──────────────────────────────────────────────────
 GROQ_MODELS = [
     "openai/gpt-oss-120b",
     "openai/gpt-oss-20b",
@@ -61,8 +65,8 @@ def groq_complete(messages: list, max_tokens: int = 4000) -> str:
             raw = raw.strip()
             raw = re.sub(r"<think>.*?</think>",       "", raw, flags=re.DOTALL)
             raw = re.sub(r"<thinking>.*?</thinking>", "", raw, flags=re.DOTALL)
-            raw = re.sub(r"^```(?:json)?\s*", "", raw)
-            raw = re.sub(r"\s*```$",          "", raw)
+            raw = re.sub(r"^```(?:json)?\s*",         "", raw)
+            raw = re.sub(r"\s*```$",                  "", raw)
             raw = raw.strip()
             print(f"  ✅ Model {model} responded ({len(raw)} chars)")
             return raw
@@ -70,7 +74,6 @@ def groq_complete(messages: list, max_tokens: int = 4000) -> str:
             last_error = e
             print(f"  ⚠️  Model {model} failed: {e}")
             time.sleep(2)
-            continue
     raise RuntimeError(f"All Groq models failed. Last error: {last_error}")
 
 
@@ -121,8 +124,45 @@ def clean_link(url: str) -> str:
     return url if is_real_link(url) else "Search on company careers page"
 
 
+def _rating_passes(rating_str: str) -> bool:
+    if not rating_str or rating_str.lower() in ("not publicly available", "n/a", ""):
+        return True
+    m = re.search(r"(\d+\.?\d*)", rating_str)
+    return float(m.group(1)) >= MIN_RATING if m else True
+
+
 # ── Serper.dev Search ─────────────────────────────────────────────────────────
-def serper_search(query: str, num: int = 6) -> list[dict]:
+def serper_search(query: str, num: int = 6, days: int = 2) -> list[dict]:
+    try:
+        response = requests.post(
+            "https://google.serper.dev/search",
+            headers={"X-API-KEY": SERPAPI_KEY, "Content-Type": "application/json"},
+            json={
+                "q":      query,
+                "num":    num,
+                "gl":     "in",
+                "hl":     "en",
+                "tbs":    f"qdr:d{days}",   # filter: past N days
+            },
+            timeout=15,
+        )
+        response.raise_for_status()
+        return [
+            {
+                "title":   r.get("title",   ""),
+                "link":    r.get("link",    ""),
+                "snippet": r.get("snippet", ""),
+                "date":    r.get("date",    ""),
+            }
+            for r in response.json().get("organic", [])
+        ]
+    except Exception as e:
+        print(f"  ⚠️  Serper error for '{query[:40]}': {e}")
+        return []
+
+
+def serper_search_no_filter(query: str, num: int = 3) -> list[dict]:
+    """Search without date filter — used for company verification."""
     try:
         response = requests.post(
             "https://google.serper.dev/search",
@@ -132,7 +172,11 @@ def serper_search(query: str, num: int = 6) -> list[dict]:
         )
         response.raise_for_status()
         return [
-            {"title": r.get("title",""), "link": r.get("link",""), "snippet": r.get("snippet","")}
+            {
+                "title":   r.get("title",   ""),
+                "link":    r.get("link",    ""),
+                "snippet": r.get("snippet", ""),
+            }
             for r in response.json().get("organic", [])
         ]
     except Exception as e:
@@ -160,7 +204,7 @@ def deduplicate_jobs(jobs: list[dict]) -> list[dict]:
         link = job.get("apply_link", "").strip().rstrip("/").lower()
         key  = f"{job.get('company','').lower()}::{job.get('role','').lower()}"
         if key in seen_keys:
-            print(f"  🚫 Duplicate: {job.get('company')} — {job.get('role')}")
+            print(f"  🚫 Duplicate job: {job.get('company')} — {job.get('role')}")
             continue
         if is_real_link(link) and link in seen_links:
             print(f"  🚫 Duplicate link: {job.get('company')} — {job.get('role')}")
@@ -174,28 +218,31 @@ def deduplicate_jobs(jobs: list[dict]) -> list[dict]:
 
 # ── Step 1: Search ────────────────────────────────────────────────────────────
 def search_jobs(profile: dict) -> tuple[list[dict], set]:
-    year = date.today().year
+    year  = date.today().year
+    today = date.today().strftime("%B %d %Y")
+
     queries = [
-        f"AI ML internship Hyderabad {year} apply PPO stipend 2027 batch",
-        f"GenAI LLM intern Hyderabad India {year} PPO 2026 2027 batch",
-        f"software engineering internship Hyderabad {year} PPO 2027 batch",
-        f"data science ML intern Hyderabad {year} full time offer 2027",
-        f"remote AI ML internship India {year} PPO stipend 2027 batch",
-        f"Google Microsoft Amazon Hyderabad internship {year} 2027 batch",
-        f"AI ML internship site:unstop.com {year} 2027 batch",
-        f"LLM agentic AI intern remote India {year} PPO 2027",
-        f"deep learning intern Hyderabad {year} apply PPO 2027 batch",
-        f"MLOps backend AI intern Hyderabad remote {year} 2027 batch",
-        f"site:linkedin.com AI ML intern Hyderabad {year} 2027 batch",
-        f"site:internshala.com AI ML internship Hyderabad {year} 2027",
-        f"penultimate year intern AI ML India {year} Hyderabad remote",
-        f"pre final year internship AI ML Hyderabad {year}",
+        f"AI ML internship Hyderabad {year} 2027 batch stipend PPO apply now",
+        f"GenAI LLM intern Hyderabad {year} 2027 batch PPO full time offer",
+        f"software engineering internship Hyderabad {year} 2027 batch PPO stipend",
+        f"data science ML intern Hyderabad {year} 2027 batch FTE offer stipend",
+        f"remote AI ML internship India {year} 2027 batch PPO stipend apply",
+        f"deep learning NLP intern Hyderabad remote {year} 2027 batch",
+        f"AI ML internship site:unstop.com {year} Hyderabad 2027 batch",
+        f"AI ML internship site:internshala.com Hyderabad {year} stipend",
+        f"site:linkedin.com/jobs AI ML intern Hyderabad {year} 2027 batch",
+        f"Google Microsoft Amazon Hyderabad intern {year} 2027 batch PPO",
+        f"Flipkart Meesho Swiggy Zomato intern Hyderabad {year} AI ML",
+        f"agentic AI LangGraph LLM intern Hyderabad remote {year} stipend",
+        f"MLOps backend AI intern Hyderabad remote {year} 2027 graduating",
+        f"pre final year AI ML internship Hyderabad {year} stipend PPO",
     ]
 
     all_results = []
-    print("🔍 Step 1: Searching via Serper.dev...")
+    print(f"🔍 Step 1: Searching for jobs posted in last {MAX_DAYS_OLD} days...")
+
     for query in queries:
-        results = serper_search(query, num=6)
+        results = serper_search(query, num=6, days=MAX_DAYS_OLD)
         all_results.extend(results)
         print(f"  ✅ '{query[:55]}' → {len(results)} results")
         time.sleep(0.3)
@@ -203,7 +250,8 @@ def search_jobs(profile: dict) -> tuple[list[dict], set]:
     before      = len(all_results)
     all_results = deduplicate_results(all_results)
     real_urls   = {r["link"].strip().rstrip("/").lower() for r in all_results if r.get("link")}
-    print(f"\n  📦 Raw: {before} → Unique: {len(all_results)} results\n")
+
+    print(f"\n  📦 Raw: {before} → Unique: {len(all_results)} results (last {MAX_DAYS_OLD} days)\n")
     return all_results, real_urls
 
 
@@ -212,43 +260,90 @@ def format_results(results: list[dict], limit: int = 40) -> str:
     out = ""
     for i, r in enumerate(results[:limit], 1):
         snippet = r["snippet"][:300].replace("\n", " ")
-        out    += f"[{i}] {r['title']}\n    URL: {r['link']}\n    {snippet}\n\n"
+        date_str = f" | Posted: {r['date']}" if r.get("date") else ""
+        out += f"[{i}] {r['title']}{date_str}\n    URL: {r['link']}\n    {snippet}\n\n"
     return out
 
 
 # ── Step 2: Extract Jobs ──────────────────────────────────────────────────────
 def extract_jobs(profile: dict, raw_results: list[dict], real_urls: set) -> list[dict]:
-    skills      = ", ".join(profile.get("skills",     [])[:10])
-    frameworks  = ", ".join(profile.get("frameworks", [])[:8])
-    grad_year   = profile.get("graduation_year", "2027")
-    name        = profile.get("name", "Candidate")
-    today       = date.today().strftime("%B %d, %Y")
-    search_text = format_results(raw_results)
+    skills     = ", ".join(profile.get("skills",     [])[:10])
+    frameworks = ", ".join(profile.get("frameworks", [])[:8])
+    name       = profile.get("name", "Candidate")
+    today      = date.today().strftime("%B %d, %Y")
+    search_text= format_results(raw_results)
 
     prompt = f"""
-You are an AI career agent. Today: {today}.
-Candidate: {name} | Skills: {skills} | Frameworks: {frameworks} | Grad: {grad_year} (pre-final year, 4th year B.Tech)
+You are an AI career agent helping {name} find internships. Today is {today}.
 
-LOCATION RULE: Only Hyderabad or Remote/WFH. If not mentioned assume Remote.
-BATCH RULE: Include 2027 batch, 2026+2027, or batch not mentioned. Skip "2026 only".
-LINK RULE: Copy EXACT URL. Use listing page if no apply URL. "NOT FOUND" only if zero URL.
-STIPEND RULE: Only if explicitly in snippet. Otherwise "Not publicly available". Never invent.
-EXTRACTION: Be generous. Include anything that looks like an internship. Aim for 10-15 results.
+CANDIDATE PROFILE:
+Skills: {skills}
+Frameworks: {frameworks}
+Graduation: July 2027 (currently in 4th year B.Tech, pre-final year)
 
-=== SEARCH RESULTS ===
+YOUR TASK:
+Extract internship job listings from the search results below.
+
+=== STRICT EXTRACTION RULES ===
+
+RULE 1 — RECENCY (MOST IMPORTANT):
+- ONLY extract jobs posted within the last 1-2 days from today ({today})
+- If posting date is not mentioned but the search result looks recent, include it
+- If a job was clearly posted weeks or months ago, SKIP IT
+
+RULE 2 — LOCATION:
+- ONLY extract jobs in Hyderabad or Remote/Work From Home
+- If location is not mentioned in the snippet, assume Remote and include it
+- SKIP jobs that are only in other cities (Mumbai, Bangalore, Delhi etc.) unless they also offer remote
+
+RULE 3 — BATCH ELIGIBILITY:
+- INCLUDE: jobs for 2027 batch graduates
+- INCLUDE: jobs for 2026 OR 2027 batch
+- INCLUDE: jobs that don't mention any specific batch year
+- SKIP ONLY if job strictly says "2026 batch only" or "must have already graduated"
+
+RULE 4 — ROLE RELEVANCE:
+- ONLY extract roles in: AI, ML, Deep Learning, GenAI, LLM, Data Science, Software Engineering, Backend, MLOps, Applied AI, AI Research
+- SKIP unrelated roles (HR, Marketing, Finance, Sales, Design etc.)
+
+RULE 5 — LINKS:
+- apply_link must be copied EXACTLY from the URL shown in search results
+- Do NOT modify, shorten or reconstruct any URL
+- If no URL exists for a job, write "NOT FOUND"
+
+RULE 6 — STIPEND:
+- Only write stipend if it is EXPLICITLY mentioned with a number in the snippet
+- If not found, write exactly: "Not publicly available"
+- NEVER invent or guess a number
+
+=== SEARCH RESULTS (last {MAX_DAYS_OLD} days) ===
 {search_text}
-======================
+===================================================
 
-Return ONLY a raw JSON array. No markdown. Start [ end ]
+Return ONLY a raw JSON array. No markdown. No explanation. Start with [ and end with ]
+Extract as many valid listings as possible (aim for 10+).
 
-[{{"company":"Name","role":"Title","location":"Hyderabad or Remote","mode":"Remote/Hybrid/Onsite","duration":"X months or Not specified","stipend":"amount or Not publicly available","expected_fte_ctc":"X LPA or Not publicly available","required_skills":["s1","s2"],"apply_link":"EXACT URL or NOT FOUND","deadline":"date or Not specified","date_posted":"date or Not specified","source":"LinkedIn/Unstop/etc"}}]
+[{{
+  "company": "Exact company name",
+  "role": "Exact role title from listing",
+  "location": "Hyderabad or Remote or Hyderabad/Remote",
+  "mode": "Remote or Hybrid or Onsite",
+  "duration": "X months or Not specified",
+  "stipend": "₹XX,000/month or Not publicly available",
+  "expected_fte_ctc": "X LPA or Not publicly available",
+  "required_skills": ["skill1", "skill2"],
+  "apply_link": "EXACT URL copied from search results or NOT FOUND",
+  "deadline": "date or Not specified",
+  "date_posted": "date from result or Not specified",
+  "source": "LinkedIn / Unstop / Internshala / Company Site / etc"
+}}]
 """.strip()
 
     print("🤖 Step 2: Extracting jobs via Groq...")
     time.sleep(1)
 
     raw  = groq_complete([
-        {"role": "system", "content": "Return only valid JSON arrays. Start [ end ]. No other text."},
+        {"role": "system", "content": "You extract job listings from search results. Return only valid JSON arrays. Start with [ and end with ]. No other text whatsoever."},
         {"role": "user",   "content": prompt},
     ], max_tokens=4000)
 
@@ -257,36 +352,40 @@ Return ONLY a raw JSON array. No markdown. Start [ end ]
         print("  ⚠️  No jobs extracted.")
         return []
 
+    # Validate every link
     for job in jobs:
         link = job.get("apply_link", "")
         norm = link.strip().rstrip("/").lower()
         if not is_real_link(link) or norm not in real_urls:
             job["apply_link"] = "NOT FOUND"
 
+    # Hard location filter
     before = len(jobs)
     jobs   = [j for j in jobs if is_valid_location(j.get("location", ""))]
     print(f"  ✅ Extracted {before} → {len(jobs)} after location filter\n")
+
     return deduplicate_jobs(jobs)
 
 
 # ── Step 3: Verify Companies ──────────────────────────────────────────────────
 def verify_company(company: str, role: str) -> str:
     queries = [
-        f"{company} internship PPO conversion rate return offer India",
-        f"{company} intern review ambitionbox glassdoor rating stipend",
-        f"{company} internship full time offer experience India 2024 2025",
+        f"{company} internship PPO return offer FTE conversion rate India",
+        f"{company} intern stipend salary package ambitionbox glassdoor",
+        f"{company} fresher package LPA salary India 2024 2025",
+        f"{company} intern review experience India good bad",
     ]
     info = ""
     for query in queries:
-        results = serper_search(query, num=3)
+        results = serper_search_no_filter(query, num=3)
         for r in results:
             info += f"{r.get('title','')} — {r.get('snippet','')[:250]}\n"
         time.sleep(0.3)
-    return info[:900]
+    return info[:1000]
 
 
 def verify_all_companies(jobs: list[dict]) -> list[dict]:
-    print("🔎 Step 3: Verifying companies via Serper.dev...")
+    print("🔎 Step 3: Verifying companies (PPO, stipend, package, reviews)...")
     verified = []
     for job in jobs:
         print(f"  🔍 Verifying: {job.get('company','')}...")
@@ -300,7 +399,6 @@ def verify_all_companies(jobs: list[dict]) -> list[dict]:
 # ── Step 4: Score and Filter ──────────────────────────────────────────────────
 def score_and_filter(verified_jobs: list[dict], profile: dict) -> list[dict]:
     skills  = ", ".join(profile.get("skills", [])[:10])
-    min_ctc = profile.get("minimum_fte_ctc_lpa", 8)
     name    = profile.get("name", "Candidate")
     today   = date.today().strftime("%B %d, %Y")
 
@@ -309,68 +407,162 @@ def score_and_filter(verified_jobs: list[dict], profile: dict) -> list[dict]:
         job  = v["job"]
         info = v["info"]
         summary += f"""
-[{i}] {job.get('company')} | {job.get('role')} | {job.get('location')} | {job.get('mode')}
-Stipend: {job.get('stipend')} | FTE: {job.get('expected_fte_ctc')}
-Link: {job.get('apply_link')}
-Skills: {', '.join(job.get('required_skills', []))}
-Verification:
+--- JOB {i} ---
+Company   : {job.get('company')}
+Role      : {job.get('role')}
+Location  : {job.get('location')} ({job.get('mode')})
+Duration  : {job.get('duration')}
+Stipend   : {job.get('stipend')}
+FTE CTC   : {job.get('expected_fte_ctc')}
+Apply Link: {job.get('apply_link')}
+Skills    : {', '.join(job.get('required_skills', []))}
+Posted    : {job.get('date_posted')}
+Deadline  : {job.get('deadline')}
+Source    : {job.get('source')}
+
+WEB VERIFICATION DATA (reviews, PPO, salary, rating):
 {info}
----"""
+--------------
+"""
 
     prompt = f"""
-You are an extremely strict AI career advisor for {name}. Today: {today}.
-Skills: {skills} | Min FTE CTC: {min_ctc} LPA | Graduation: 2027 (pre-final year, 4th year B.Tech)
-Location: Hyderabad or Remote ONLY | Min rating: {MIN_RATING}/5
+You are an extremely strict AI career advisor. Today is {today}.
+You are helping {name}, a pre-final year B.Tech student graduating in July 2027.
+Candidate skills: {skills}
 
-{summary}
+Below are internship listings with web verification data about each company.
+Your job is to STRICTLY filter and rank only the best opportunities.
 
-REJECT if ANY: not Hyderabad/Remote, rating below {MIN_RATING}, scam/zero web presence, severe negative reviews, stipend below Rs.{MIN_STIPEND_INR}/month, PPO Low or no evidence, apply_link NOT FOUND or fake, role requires 2026 grad only, role unrelated to AI/ML/SWE/Backend/GenAI.
+=== MANDATORY REJECTION CRITERIA ===
+IMMEDIATELY REJECT a job if ANY of the following are true:
 
-ACCEPT only if ALL: Hyderabad/Remote, real company, PPO High/Medium WITH evidence, rating {MIN_RATING}+ or unknown funded startup, positive reviews, real apply link, role matches skills.
+1. STIPEND UNKNOWN: No stipend information found anywhere (listing + verification data).
+   → We do NOT want free internships. If stipend is completely unknown, REJECT.
+   → Exception: If company is a top-tier brand (Google, Microsoft, Amazon, Meta, etc.) where stipend is well-known to be high, you may keep it.
 
-DATA RULES: Stipend/CTC/Rating from verification data ONLY. Never invent. apply_link copy exactly — if NOT FOUND reject job. ppo_evidence must be specific — if none reject job.
+2. FTE PACKAGE UNKNOWN: No fresher/FTE package information found anywhere.
+   → If expected FTE CTC for freshers cannot be estimated at ≥{MIN_FTE_LPA} LPA, REJECT.
+   → Exception: Same top-tier brand exception applies.
 
-Quality over quantity. Return 0 if nothing passes. No markdown. Start [ end ]
+3. NO PPO EVIDENCE: No evidence of PPO or FTE conversion found in reviews or verification data.
+   → "Not publicly available" for PPO with no other evidence = REJECT.
+   → Must have at least some review or data confirming the company converts interns.
 
-[{{"rank":1,"company":"","role":"","location":"","mode":"","duration":"","stipend":"from data or Not publicly available","expected_fte_ctc":"from data or Not publicly available","ppo_probability":"High or Medium ONLY","ppo_evidence":"specific evidence from reviews","company_rating":"X/5 or Not publicly available","intern_review_summary":"2-3 sentences from REAL reviews","required_skills":[],"why_strong_match":"2 sentences","missing_skills":[],"apply_link":"real URL only","deadline":"","date_posted":"","source":"","verified":true}}]
+4. BAD REVIEWS: Company has predominantly negative intern reviews (below {MIN_RATING}/5 rating, or multiple reviews mentioning poor experience, no learning, fake PPO promises).
+
+5. FAKE/SCAM COMPANY: Company has no web presence, no reviews, no funding info, no LinkedIn page.
+
+6. WRONG LOCATION: Job is not in Hyderabad or Remote. No exceptions.
+
+7. WRONG BATCH: Job strictly requires 2026 or earlier graduation. Must accept 2027 batch.
+
+8. WRONG ROLE: Not related to AI/ML/GenAI/LLM/Data Science/SWE/Backend/MLOps.
+
+9. FAKE APPLY LINK: apply_link is "NOT FOUND" or does not look like a real job listing URL.
+
+10. LOW STIPEND: Stipend confirmed below ₹{MIN_STIPEND_INR:,}/month. Reject unpaid/underpaid internships.
+
+=== MANDATORY ACCEPTANCE CRITERIA ===
+ONLY accept if ALL of the following are true:
+
+1. STIPEND CONFIRMED or strongly implied: ₹{MIN_STIPEND_INR:,}+/month
+   (or top-tier company where high stipend is industry-known)
+
+2. FTE PACKAGE: Evidence of ≥{MIN_FTE_LPA} LPA fresher package at this company
+   (from reviews, ambitionbox, glassdoor, or company reputation)
+
+3. PPO EVIDENCE: Real evidence that this company converts interns to FTE
+   (reviews, LinkedIn posts, intern experiences, company policy)
+
+4. COMPANY QUALITY: Real company with web presence, funding, or brand recognition
+   AND rating ≥{MIN_RATING}/5 on Glassdoor/Ambitionbox (or no rating for new funded startups)
+
+5. REVIEWS EXIST: At least some intern review data exists (can be mixed, not strictly positive)
+
+6. LOCATION: Hyderabad or Remote confirmed
+
+7. BATCH: Accepts 2027 batch graduates
+
+8. REAL APPLY LINK: Valid URL to the actual job listing
+
+9. ROLE MATCH: Role matches candidate's AI/ML/LLM/Backend/Data Science skills
+
+=== SCORING (rank by total score) ===
+- PPO probability High = +40 points
+- PPO probability Medium = +20 points
+- Stipend ≥ ₹30,000 = +20 points, ≥ ₹20,000 = +10 points
+- FTE CTC ≥ 15 LPA = +20 points, ≥ 10 LPA = +10 points
+- Company rating ≥ 4.0 = +15 points, ≥ 3.5 = +10 points
+- Top brand (Google/Microsoft/Amazon/Flipkart etc.) = +15 points
+- Skills match ≥ 80% = +10 points
+
+=== OUTPUT FORMAT ===
+Return ONLY a raw JSON array ranked by score (highest first).
+No markdown. No explanation. Start with [ and end with ]
+Return empty array [] if nothing passes all criteria.
+
+[{{
+  "rank": 1,
+  "company": "Company name",
+  "role": "Exact role title",
+  "location": "Hyderabad or Remote",
+  "mode": "Remote or Hybrid or Onsite",
+  "duration": "X months or Not specified",
+  "stipend": "Verified ₹XX,000/month or Not publicly available",
+  "expected_fte_ctc": "X LPA based on verification data or Not publicly available",
+  "ppo_probability": "High or Medium (ONLY these two values — never Low or Unknown)",
+  "ppo_evidence": "Exact quote or specific summary from reviews proving PPO/FTE conversion",
+  "company_rating": "X.X/5 from Glassdoor/Ambitionbox or Not publicly available",
+  "fresher_package_evidence": "What the company pays freshers — from reviews/ambitionbox",
+  "intern_review_summary": "2-3 honest sentences summarizing real intern reviews found",
+  "required_skills": ["skill1", "skill2"],
+  "why_strong_match": "2 specific sentences explaining why this matches {name}'s exact profile",
+  "missing_skills": ["skill if any"],
+  "apply_link": "Real working URL — copied exactly from job data",
+  "deadline": "Application deadline or Not specified",
+  "date_posted": "When this job was posted",
+  "source": "Where the listing was found",
+  "verified": true
+}}]
 """.strip()
 
-    print("🤖 Step 4: Scoring and filtering...")
+    print("🤖 Step 4: Scoring and filtering (strict PPO + stipend + package + reviews)...")
     time.sleep(1)
 
     raw  = groq_complete([
-        {"role": "system", "content": "Strict career advisor. Return only valid JSON arrays. No markdown. Quality over quantity."},
+        {"role": "system", "content": "You are an extremely strict career advisor. Return only valid JSON arrays. No markdown. No explanation. Quality over quantity — return 0 jobs rather than bad ones."},
         {"role": "user",   "content": prompt},
-    ], max_tokens=5000)
+    ], max_tokens=6000)
 
     jobs = safe_parse_json_array(raw)
     if not jobs:
         print("  ⚠️  No jobs passed scoring.")
         return []
 
+    # Hard PPO filter
     before = len(jobs)
     jobs   = [j for j in jobs if j.get("ppo_probability","").lower() in ("high","medium")]
-    print(f"  🎯 PPO filter: {before} → {len(jobs)}")
+    print(f"  🎯 PPO filter       : {before} → {len(jobs)}")
 
+    # Hard link filter
     before = len(jobs)
     jobs   = [j for j in jobs if is_real_link(j.get("apply_link",""))]
-    print(f"  🔗 Link filter: {before} → {len(jobs)}")
+    print(f"  🔗 Link filter      : {before} → {len(jobs)}")
 
+    # Clean links
     for job in jobs:
         job["apply_link"] = clean_link(job.get("apply_link",""))
 
+    # Rating + location filter
     before = len(jobs)
-    jobs   = [j for j in jobs if _rating_passes(j.get("company_rating","")) and is_valid_location(j.get("location",""))]
-    print(f"  ⭐ Rating + location: {before} → {len(jobs)} passed all filters\n")
+    jobs   = [
+        j for j in jobs
+        if _rating_passes(j.get("company_rating",""))
+        and is_valid_location(j.get("location",""))
+    ]
+    print(f"  ⭐ Rating+location  : {before} → {len(jobs)} passed all filters\n")
 
     return deduplicate_jobs(jobs)
-
-
-def _rating_passes(rating_str: str) -> bool:
-    if not rating_str or rating_str.lower() in ("not publicly available","n/a",""):
-        return True
-    m = re.search(r"(\d+\.?\d*)", rating_str)
-    return float(m.group(1)) >= MIN_RATING if m else True
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -378,21 +570,35 @@ def run_agent() -> list[dict]:
     from memory import filter_new_jobs, remember_jobs, print_memory_stats
 
     profile = load_resume_profile()
-    print("🧠 Checking memory...")
+    today   = date.today().strftime("%B %d, %Y")
+
+    print(f"\n📅 Date: {today}")
+    print(f"📍 Location: Hyderabad + Remote only")
+    print(f"🎓 Batch: 2027 (pre-final year)")
+    print(f"💰 Min stipend: ₹{MIN_STIPEND_INR:,}/month")
+    print(f"📦 Min FTE CTC: {MIN_FTE_LPA} LPA")
+    print(f"🗓  Jobs posted: last {MAX_DAYS_OLD} days only\n")
+
+    print("🧠 Checking memory for previously seen jobs...")
     print_memory_stats()
 
     raw_results, real_urls = search_jobs(profile)
-    raw_jobs               = extract_jobs(profile, raw_results, real_urls)
+
+    if not raw_results:
+        print("⚠️  No search results found.")
+        return []
+
+    raw_jobs = extract_jobs(profile, raw_results, real_urls)
 
     if not raw_jobs:
-        print("⚠️  No jobs after extraction.")
+        print("⚠️  No jobs extracted.")
         return []
 
     print("🧠 Filtering previously seen jobs...")
     raw_jobs = filter_new_jobs(raw_jobs)
 
     if not raw_jobs:
-        print("⚠️  All jobs already seen. Nothing new today.")
+        print("⚠️  All jobs already seen before. Nothing new today.")
         return []
 
     verified   = verify_all_companies(raw_jobs)
@@ -402,8 +608,10 @@ def run_agent() -> list[dict]:
     final_jobs = filter_new_jobs(final_jobs)
 
     if final_jobs:
-        print("💾 Saving to memory...")
+        print("💾 Saving new jobs to memory...")
         remember_jobs(final_jobs)
+    else:
+        print("⚠️  No jobs passed all filters today.")
 
     return final_jobs
 
