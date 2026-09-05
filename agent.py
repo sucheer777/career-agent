@@ -43,11 +43,11 @@ FAKE_LINK_PATTERNS = [
 
 # ── Groq model fallback list ──────────────────────────────────────────────────
 GROQ_MODELS = [
-    "openai/gpt-oss-120b",
-    "openai/gpt-oss-20b",
-    "qwen/qwen3.6-27b",
+    "llama-3.3-70b-versatile",
+    "moonshotai/kimi-k2-instruct",
+    "deepseek-r1-distill-llama-70b",
+    "llama-3.1-8b-instant",
 ]
-
 
 # ── Groq call with auto fallback ──────────────────────────────────────────────
 def groq_complete(messages: list, max_tokens: int = 4000) -> str:
