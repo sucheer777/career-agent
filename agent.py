@@ -42,15 +42,17 @@ FAKE_LINK_PATTERNS = [
 ]
 
 # ── Groq model fallback list ──────────────────────────────────────────────────
+# ── Groq model fallback list ──────────────────────────────────────────────────
 GROQ_MODELS = [
-    "llama-3.3-70b-versatile",
-    "moonshotai/kimi-k2-instruct",
-    "deepseek-r1-distill-llama-70b",
-    "llama-3.1-8b-instant",
+    "openai/gpt-oss-20b",
+    "openai/gpt-oss-120b",
+    "qwen/qwen3.6-27b",
+    "qwen/qwen3.8-27b",
 ]
 
+
 # ── Groq call with auto fallback ──────────────────────────────────────────────
-def groq_complete(messages: list, max_tokens: int = 4000) -> str:
+def groq_complete(messages: list, max_tokens: int = 2000) -> str:
     last_error = None
     for model in GROQ_MODELS:
         try:
@@ -63,17 +65,33 @@ def groq_complete(messages: list, max_tokens: int = 4000) -> str:
             )
             raw = response.choices[0].message.content or ""
             raw = raw.strip()
+
+            # If model returned empty — try next model
+            if not raw or len(raw) < 5:
+                print(f"  ⚠️  Model {model} returned empty response — trying next...")
+                continue
+
             raw = re.sub(r"<think>.*?</think>",       "", raw, flags=re.DOTALL)
             raw = re.sub(r"<thinking>.*?</thinking>", "", raw, flags=re.DOTALL)
             raw = re.sub(r"^```(?:json)?\s*",         "", raw)
             raw = re.sub(r"\s*```$",                  "", raw)
             raw = raw.strip()
+
             print(f"  ✅ Model {model} responded ({len(raw)} chars)")
             return raw
+
         except Exception as e:
             last_error = e
-            print(f"  ⚠️  Model {model} failed: {e}")
-            time.sleep(2)
+            err_str = str(e)
+            if "rate_limit_exceeded" in err_str or "413" in err_str:
+                print(f"  ⚠️  Model {model} — token limit hit, trying next...")
+            elif "model_not_found" in err_str or "model_decommissioned" in err_str:
+                print(f"  ⚠️  Model {model} — not available, trying next...")
+            else:
+                print(f"  ⚠️  Model {model} failed: {e}")
+            time.sleep(1)
+            continue
+
     raise RuntimeError(f"All Groq models failed. Last error: {last_error}")
 
 
