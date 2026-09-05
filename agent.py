@@ -614,7 +614,7 @@ def run_agent() -> list[dict]:
         print(f"  📦 Processing batch {i//batch_size + 1}...")
         batch_jobs = extract_jobs(profile, batch, real_urls)
         raw_jobs.extend(batch_jobs)
-        time.sleep(3)
+        time.sleep(10)
 
     raw_jobs = deduplicate_jobs(raw_jobs)
     print(f"  ✅ Total extracted after all batches: {len(raw_jobs)}\n")
